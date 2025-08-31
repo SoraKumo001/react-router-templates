@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "react-router-app",
+  "compatibility_date": "2025-08-31",
+  "compatibility_flags": ["nodejs_compat"],
+  "main": "./workers/app.ts",
+  "vars": {
+    "VALUE_FROM_CLOUDFLARE": "Hello from Cloudflare"
+  },
+  "assets": {
+    "directory": "./build/client",
+    "binding": "ASSETS"
+  }
+}
