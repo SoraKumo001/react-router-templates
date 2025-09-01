@@ -6,6 +6,7 @@
     "preview": "wrangler dev",
     "build": "react-router build",
     "deploy": "npm run build && wrangler deploy",
+    "dry-run": "wrangler deploy --dry-run",
     "cf-typegen": "wrangler types",
     "postinstall": "npm run cf-typegen",
     "typecheck": "npm run cf-typegen && react-router typegen && tsc -b"

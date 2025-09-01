@@ -1,6 +1,8 @@
-# Welcome to React Router!
+# Welcome to React Router and Hono!
 
-A modern, production-ready template for building full-stack React applications using React Router.
+A modern, production-ready template for building full-stack React applications using React Router and Hono.
+
+Since these two cannot coexist in the build, we have removed `@cloudflare/vite-plugin` and are using `rolldown-vite` instead.
 
 ## Features
 
@@ -56,6 +58,12 @@ To build and deploy directly to production:
 
 ```sh
 npm run deploy
+```
+
+check deployment size without deploying
+
+```sh
+npm run dry-run
 ```
 
 To deploy a preview URL:
