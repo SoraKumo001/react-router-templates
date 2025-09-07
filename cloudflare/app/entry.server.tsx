@@ -1,5 +1,10 @@
-import type { AppLoadContext, EntryContext } from "react-router";
-import { ServerRouter } from "react-router";
+import type {
+  ActionFunctionArgs,
+  AppLoadContext,
+  EntryContext,
+  LoaderFunctionArgs,
+} from "react-router";
+import { isRouteErrorResponse, ServerRouter } from "react-router";
 import { isbot } from "isbot";
 import { renderToReadableStream } from "react-dom/server";
 
@@ -40,4 +45,18 @@ export default async function handleRequest(
     headers: responseHeaders,
     status: responseStatusCode,
   });
+}
+
+// Suppressing excessive error messages when files are not found
+export function handleError(
+  error: unknown,
+  { request }: LoaderFunctionArgs | ActionFunctionArgs
+) {
+  if (
+    (isRouteErrorResponse(error) && error.status === 404) ||
+    request.signal.aborted
+  ) {
+    return;
+  }
+  console.error(error);
 }

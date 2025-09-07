@@ -1,11 +1,10 @@
 import { reactRouter } from "@react-router/dev/vite";
 import tailwindcss from "@tailwindcss/vite";
+import serverAdapter, { defaultOptions } from "@hono/vite-dev-server";
+import type { cloudflareAdapter } from "@hono/vite-dev-server/cloudflare";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
-import serverAdapter from "hono-react-router-adapter/vite";
-import type { cloudflareAdapter } from "@hono/vite-dev-server/cloudflare";
-import { getPlatformProxy } from "wrangler";
-import { defaultOptions } from "@hono/vite-dev-server";
+import { getPlatformProxy, unstable_getVarsForDev } from "wrangler";
 
 // Entry file
 const entry = "./workers/app.ts";
@@ -40,6 +39,16 @@ export default defineConfig({
       entry,
       // Asset adjustment
       exclude: [...defaultOptions.exclude, /\.(webp|png|svg)(\?.*)?$/],
+      // HMR adjustment
+      handleHotUpdate: ({ server, modules }) => {
+        const isServer = modules.some((mod) => {
+          return mod._ssrModule?.id && !mod._clientModule;
+        });
+        if (isServer) {
+          server.hot.send({ type: "full-reload" });
+          return [];
+        }
+      },
     }),
     tailwindcss(),
     reactRouter(),
